@@ -24,28 +24,38 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
+    - _ColorMask: 15
+    - _Stencil: 0
+    - _StencilComp: 8
+    - _StencilOp: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
+    - _UseUIAlphaClip: 0
     - axisWidth: 0.05
-    - gridSmoothWidth: 0.015
+    - gridSmoothWidth: 0.04
     - lineAmplitude: 0.1
     - lineFrequency: 1
     - lineSpeed: 2
-    - linesPerGroup: 8
+    - linesPerGroup: 4
     - majorLineFrequency: 5
     - majorLineWidth: 0.025
-    - maxLineWidth: 0.5
+    - maxLineWidth: 1.5
     - maxOffsetSpread: 3
-    - minLineWidth: 0.02
-    - minOffsetSpread: 0.4
+    - minLineWidth: 0.01
+    - minOffsetSpread: 2
     - minorLineFrequency: 1
     - minorLineWidth: 0.0125
     - offsetFrequency: 0.5
     - offsetSpeed: 0.35
-    - scale: 0.18
+    - overallSpeed: 0.8
+    - overrallSpeed: 3.13
+    - scale: 0.29
     - warpAmplitude: 0.2
     - warpFrequency: 0.3
     - warpSpeed: 0.1
     m_Colors:
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
     - gridColor: {r: 0.5, g: 0.5, b: 0.5, a: 0.5}
-    - lineColor: {r: 0.25, g: 0.5, b: 1, a: 1}
+    - lineColor: {r: 0.053000003, g: 0.10600003, b: 0.21200001, a: 0}
     - majorBackgroundColor: {r: 0.125, g: 0.25, b: 0.5, a: 0.5}
     - minorBackgroundColor: {r: 0.05, g: 0.3, b: 0.3, a: 0}
