@@ -849,6 +849,41 @@ PrefabInstance:
       propertyPath: m_Name
       value: canvas-landscape (dual)
       objectReference: {fileID: 0}
+    - target: {fileID: 268742579704160278, guid: 7450f69fee82df846b6365125317a452,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2340748091052488762, guid: 7450f69fee82df846b6365125317a452,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2340748091052488762, guid: 7450f69fee82df846b6365125317a452,
+        type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 2340748091052488762, guid: 7450f69fee82df846b6365125317a452,
+        type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 2722006170598912096, guid: 7450f69fee82df846b6365125317a452,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2722006170598912096, guid: 7450f69fee82df846b6365125317a452,
+        type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 2722006170598912096, guid: 7450f69fee82df846b6365125317a452,
+        type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 3686105881808960369, guid: 7450f69fee82df846b6365125317a452,
         type: 3}
       propertyPath: m_Name
