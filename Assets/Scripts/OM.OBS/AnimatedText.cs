@@ -15,10 +15,18 @@ namespace OM.OBS
         {
             set
             {
-                DissolveText.text = AppearText.text;
-                AppearText.text = value;
-                Director.time = 0;
-                Director.Play();
+                if (isActiveAndEnabled)
+                {
+                    DissolveText.text = AppearText.text;
+                    AppearText.text = value;
+                    Director.time = 0;
+                    Director.Play();
+                }
+                else
+                {
+                    DissolveText.text = value;
+                    AppearText.text = value;
+                }
             }
         }
     }
