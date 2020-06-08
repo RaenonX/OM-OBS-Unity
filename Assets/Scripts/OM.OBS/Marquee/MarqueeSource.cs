@@ -11,6 +11,11 @@ namespace OM.OBS
 
         public event System.Action<MarqueeSource> ContentChanged;
 
+        protected void ClearContent()
+        {
+            Lines?.Clear();
+        }
+
         protected void SetContent(IEnumerable<string> lines)
         {
             Lines = Lines ?? new List<string>();

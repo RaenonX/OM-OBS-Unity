@@ -6,7 +6,7 @@ using UnityEngine.Networking;
 
 namespace OM.OBS
 {
-    class MarqueeYoutubeWatchers : MarqueeSource
+    class MarqueeYoutubeViewers : MarqueeSource
     {
         #region Response Structures
 
@@ -72,6 +72,10 @@ namespace OM.OBS
                             {
                                 SetContent(string.Format(DisplayFormat, viewers));
                             }
+                            else
+                            {
+                                ClearContent();
+                            }
                         }
                         else
                         {
@@ -81,6 +85,7 @@ namespace OM.OBS
                     catch (Exception e)
                     {
                         Debug.LogException(e);
+                        ClearContent();
                     }
                 }
                 yield return new WaitForSecondsRealtime(QueryFrequency);
