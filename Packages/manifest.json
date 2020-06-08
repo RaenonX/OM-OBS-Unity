@@ -6,6 +6,7 @@
     "com.unity.collab-proxy": "1.2.16",
     "com.unity.ide.rider": "1.1.4",
     "com.unity.ide.vscode": "1.2.0",
+    "com.unity.postprocessing": "2.3.0",
     "com.unity.recorder": "2.2.0-preview.4",
     "com.unity.test-framework": "1.1.14",
     "com.unity.textmeshpro": "2.0.1",
@@ -44,6 +45,10 @@
     "com.unity.modules.xr": "1.0.0"
   },
   "lock": {
+    "com.coffee.softmask-for-ugui": {
+      "revision": "HEAD",
+      "hash": "9ad7d46a10541a6f857931f9a7dfacfa02060d80"
+    },
     "com.coffee.ui-effect": {
       "revision": "HEAD",
       "hash": "07926376c6999aae8df52173ccac80351ec417d5"
@@ -51,10 +56,6 @@
     "com.coffee.ui-particle": {
       "revision": "HEAD",
       "hash": "901e7f16478a3baa451e8de79a4a61d3879d521d"
-    },
-    "com.coffee.softmask-for-ugui": {
-      "revision": "HEAD",
-      "hash": "9ad7d46a10541a6f857931f9a7dfacfa02060d80"
     }
   }
 }
