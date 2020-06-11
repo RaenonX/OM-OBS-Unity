@@ -2,6 +2,7 @@
     Properties
     {
         _MainTex("Albedo (RGB)", 2D) = "white" {}
+        _EmissionMap("Emission", 2D) = "black" {}
         _Glossiness("Smoothness", Range(0,1)) = 0.5
         _Metallic("Metallic", Range(0,1)) = 0.0
     }
@@ -17,43 +18,89 @@
         #pragma instancing_options procedural:setup
 
         sampler2D _MainTex;
+        sampler2D _EmissionMap;
 
         struct Input {
             float2 uv_MainTex;
         };
 
         #ifdef UNITY_PROCEDURAL_INSTANCING_ENABLED
-        StructuredBuffer<float4> positionBuffer;
+        StructuredBuffer<float4> PositionBuffer;
         #endif
+        float4x4 ObjectToWorld;
+        float4 InstancedArgs;
+        float4 AxisAngle;
 
-        void rotate2D(inout float2 v, float r)
+        float4x4 inverse(float4x4 input)
         {
-            float s, c;
-            sincos(r, s, c);
-            v = float2(v.x * c - v.y * s, v.x * s + v.y * c);
+            #define minor(a,b,c) determinant(float3x3(input.a, input.b, input.c))
+            float4x4 cofactors = float4x4(
+                minor(_22_23_24, _32_33_34, _42_43_44),
+                -minor(_21_23_24, _31_33_34, _41_43_44),
+                minor(_21_22_24, _31_32_34, _41_42_44),
+                -minor(_21_22_23, _31_32_33, _41_42_43),
+
+                -minor(_12_13_14, _32_33_34, _42_43_44),
+                minor(_11_13_14, _31_33_34, _41_43_44),
+                -minor(_11_12_14, _31_32_34, _41_42_44),
+                minor(_11_12_13, _31_32_33, _41_42_43),
+
+                minor(_12_13_14, _22_23_24, _42_43_44),
+                -minor(_11_13_14, _21_23_24, _41_43_44),
+                minor(_11_12_14, _21_22_24, _41_42_44),
+                -minor(_11_12_13, _21_22_23, _41_42_43),
+
+                -minor(_12_13_14, _22_23_24, _32_33_34),
+                minor(_11_13_14, _21_23_24, _31_33_34),
+                -minor(_11_12_14, _21_22_24, _31_32_34),
+                minor(_11_12_13, _21_22_23, _31_32_33)
+                );
+            #undef minor
+            return transpose(cofactors) / determinant(input);
+        }
+
+        float4x4 matrixFromData(float4 axisAngle, float4 positionScale)
+        {
+            float4 q = float4(
+                axisAngle.xyz * sin(axisAngle.w * 0.5),
+                cos(axisAngle.w * 0.5)
+            );
+
+            float x = q.x * 2;
+            float y = q.y * 2;
+            float z = q.z * 2;
+            float xx = q.x * x;
+            float yy = q.y * y;
+            float zz = q.z * z;
+            float xy = q.x * y;
+            float xz = q.x * z;
+            float yz = q.y * z;
+            float wx = q.w * x;
+            float wy = q.w * y;
+            float wz = q.w * z;
+
+            float4x4 m;
+            m._11_21_31_41 = float4((1 - (yy + zz)), xy + wz, xz - wy, 0);
+            m._12_22_32_42 = float4(xy - wz, (1 - (xx + zz)), yz + wx, 0);
+            m._13_23_33_43 = float4(xz + wy, yz - wx, (1 - (xx + yy)), 0);
+            m._14_24_34_44 = float4(positionScale.xyz, 1);
+            m._11_22_33 *= positionScale.w;
+
+            return m;
         }
 
         void setup()
         {
         #ifdef UNITY_PROCEDURAL_INSTANCING_ENABLED
-            float4 data = positionBuffer[unity_InstanceID];
+            float4 data = PositionBuffer[unity_InstanceID];
 
-            float rotation = data.w * data.w * _Time.y * 0.5f;
-            rotate2D(data.xz, rotation);
+            float angleModifier = clamp(AxisAngle.w + unity_InstanceID * InstancedArgs.x, 0, 6.28318530718);
+            float scaleModifier = clamp(InstancedArgs.w + unity_InstanceID * InstancedArgs.y, 0, 1);
 
-            //float4x4 instanceToObject;
-            //instanceToObject._11_21_31_41 = float4(data.w, 0, 0, 0);
-            //instanceToObject._12_22_32_42 = float4(0, data.w, 0, 0);
-            //instanceToObject._13_23_33_43 = float4(0, 0, data.w, 0);
-            //instanceToObject._14_24_34_44 = float4(data.xyz, 1);
-
-            unity_ObjectToWorld._11_21_31_41 = float4(data.w, 0, 0, 0);
-            unity_ObjectToWorld._12_22_32_42 = float4(0, data.w, 0, 0);
-            unity_ObjectToWorld._13_23_33_43 = float4(0, 0, data.w, 0);
-            unity_ObjectToWorld._14_24_34_44 = float4(data.xyz, 1);
-            unity_WorldToObject = unity_ObjectToWorld;
-            unity_WorldToObject._14_24_34 *= -1;
-            unity_WorldToObject._11_22_33 = 1.0f / unity_WorldToObject._11_22_33;
+            data.w *= scaleModifier;
+            float4x4 instanceToObject = matrixFromData(float4(AxisAngle.xyz, angleModifier), data);
+            unity_ObjectToWorld = mul(ObjectToWorld, instanceToObject);
+            unity_WorldToObject = inverse(unity_ObjectToWorld);
         #endif
         }
 
@@ -65,6 +112,7 @@
             o.Albedo = c.rgb;
             o.Metallic = _Metallic;
             o.Smoothness = _Glossiness;
+            o.Emission = tex2D(_EmissionMap, IN.uv_MainTex);
             o.Alpha = c.a;
         }
         ENDCG
