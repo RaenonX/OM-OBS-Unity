@@ -263,8 +263,8 @@ namespace OM.OBS
             result = new List<Vector4>(maxVoxels);
             Vector2Int indexOffset = new Vector2Int
             {
-                x = ((c - 1) % charactersPerLine) * FontSize.x,
-                y = ((lines - 1) - (c - 1) / charactersPerLine) * FontSize.y
+                x = ((c - 0x20) % charactersPerLine) * FontSize.x,
+                y = ((lines - 1) - (c - 0x20) / charactersPerLine) * FontSize.y
             };
 
             Vector4 offset = new Vector4(-FontSize.x * 0.5f, -FontSize.y * 0.5f);
